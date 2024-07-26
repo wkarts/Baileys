@@ -57,16 +57,16 @@ jobs:
       - name: Update Nightly TAG
         uses: richardsimko/update-tag@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         with:
           tag_name: nightly
 
       - name: Update Nightly Release
         uses: meeDamian/github-release@2.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
           tag: nightly
           commitish: ${{ github.sha }}
           name: Nightly Release
