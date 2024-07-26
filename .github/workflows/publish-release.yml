@@ -49,9 +49,9 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
-      - name: Publish in NPM (whiskeysockets scope)
+      - name: Publish in NPM (wkarts scope)
         run: |
-          npx json -I -f package.json -e "this.name='@whiskeysockets/baileys'"
+          npx json -I -f package.json -e "this.name='@wkarts/baileys'"
           npm publish --access public --//registry.npmjs.org/:_authToken=$NPM_TOKEN
           npx json -I -f package.json -e "this.name='baileys'"
         env:
@@ -74,9 +74,9 @@ jobs:
       - name: Create Release
         uses: meeDamian/github-release@2.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PERSONAL_TOKEN }}
           tag: ${{ github.ref }}
           commitish: ${{ github.sha }}
           name: ${{ github.ref_name }}
