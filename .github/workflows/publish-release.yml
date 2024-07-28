@@ -45,14 +45,14 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish in NPM (as `baileys`)
-        run: npm publish --access public
+        run: npm publish --access public --registry https://registry.npmjs.org/baileyss
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       
       - name: Publish in NPM (wkarts scope)
         run: |
           npx json -I -f package.json -e "this.name='@wkarts/baileys'"
-          npm publish --access public --//registry.npmjs.org/:_authToken=$NPM_TOKEN
+          npm publish --access public --registry https://registry.npmjs.org/baileyss
           npx json -I -f package.json -e "this.name='baileyss'"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
