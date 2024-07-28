@@ -44,26 +44,15 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Configure NPM for Publishing
-        run: echo "registry=https://registry.npmjs.org/baileyss" > ~/.npmrc
+      - name: Publish in NPM (as `@wkarts/baileys`)
+        run: npm publish --access public --registry https://registry.npmjs.org/baileyss
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish in NPM (as `baileys`)
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Publish in NPM (wkarts scope)
-        run: |
-          npx json -I -f package.json -e "this.name='@wkarts/baileys'"
-          npm publish --access public
-          npx json -I -f package.json -e "this.name='baileyss'"
+      
+      - name: Revert Package Name
+        run: npx json -I -f package.json -e "this.name='baileys'"
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Clean up NPM configuration
-        run: rm ~/.npmrc
 
       - name: Generate Changelog
         id: generate_changelog
