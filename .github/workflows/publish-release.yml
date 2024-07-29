@@ -44,7 +44,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Publish in NPM (as `baileys`)
+      - name: Publish in NPM (as `baileyss`)
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -79,7 +79,7 @@ jobs:
           token: ${{ secrets.PERSONAL_TOKEN }}
           tag: ${{ github.ref }}
           commitish: ${{ github.sha }}
-          name: ${{ secrets.PERSONAL_NAME }}
+          name: ${{ github.ref_name }}
           body: ${{ steps.generate_changelog.outputs.changelog }}
           draft: false
           prerelease: false
