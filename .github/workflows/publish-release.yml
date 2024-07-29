@@ -29,7 +29,7 @@ jobs:
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v3
-        id: yarn-cache
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -46,11 +46,17 @@ jobs:
 
       - name: Create .npmrc with custom registry
         run: |
-          echo "registry=https://registry.npmjs.org/baileyss" > ~/.npmrc
+          echo "registry=https://registry.npmjs.org" > ~/.npmrc
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
 
       - name: Publish to Custom Registry
-        run: npm publish --access public
+        run: |
+          echo "Verificando conectividade com o registro..."
+          curl -I https://registry.npmjs.org
+          echo "Publicando pacote..."
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Clean up .npmrc
         run: rm ~/.npmrc
