@@ -64,6 +64,33 @@ jobs:
       - name: Revert Package Name
         run: npx json -I -f package.json -e "this.name='baileys'"
 
+      - name: Check if release exists
+        id: check_release
+        run: |
+          RELEASE_EXISTS=$(curl -s -H "Authorization: token ${{ secrets.PERSONAL_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} \
+            | jq -r '.message')
+          if [ "$RELEASE_EXISTS" == "Not Found" ]; then
+            echo "Release does not exist"
+            echo "release_exists=false" >> $GITHUB_ENV
+          else
+            echo "Release exists"
+            echo "release_exists=true" >> $GITHUB_ENV
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
+      - name: Delete existing release if exists
+        if: env.release_exists == 'true'
+        run: |
+          RELEASE_ID=$(curl -s -H "Authorization: token ${{ secrets.PERSONAL_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/tags/${{ github.ref_name }} \
+            | jq -r '.id')
+          curl -X DELETE -H "Authorization: token ${{ secrets.PERSONAL_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID
+        env:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+
       - name: Generate Changelog
         id: generate_changelog
         run: |
