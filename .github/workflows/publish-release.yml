@@ -23,13 +23,16 @@ jobs:
         uses: actions/setup-node@v3.6.0
         with:
           node-version: 20.x
+          registry-url: "https://registry.npmjs.org/baileyss"
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
 
       - uses: actions/cache@v3
-        id: yarn-cache
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
@@ -41,20 +44,18 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Set Package Name to @wkarts/baileys
-        run: npx json -I -f package.json -e "this.name='@wkarts/baileys'"
-
-      - name: Create .npmrc with custom registry
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-      - name: Publish to Custom Registry
-        run: npm publish --access public --registry=https://registry.npmjs.org/baileyss
-
-      - name: Clean up .npmrc
-        run: rm ~/.npmrc
-
-      - name: Revert Package Name
-        run: npx json -I -f package.json -e "this.name='baileys'"
+      - name: Publish in NPM (as `baileys`)
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      
+      - name: Publish in NPM (wkarts scope)
+        run: |
+          #npx json -I -f package.json -e "this.name='@wkarts/baileys'"
+          npm publish --access public --//registry.npmjs.org/:_authToken=$NPM_TOKEN
+          #npx json -I -f package.json -e "this.name='baileys'"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Generate Changelog
         id: generate_changelog
