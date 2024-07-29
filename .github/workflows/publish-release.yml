@@ -23,8 +23,6 @@ jobs:
         uses: actions/setup-node@v3.6.0
         with:
           node-version: 20.x
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -40,29 +38,21 @@ jobs:
 
       - name: Install Dependencies
         run: yarn
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Set Package Name to @wkarts/baileys
         run: npx json -I -f package.json -e "this.name='@wkarts/baileys'"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create .npmrc with custom registry
-        run: echo "registry=https://registry.npmjs.org/baileyss\n//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      - name: Publish in NPM
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to Custom Registry
+        run: npm publish --access public --registry=https://registry.npmjs.org/baileyss
 
       - name: Clean up .npmrc
         run: rm ~/.npmrc
 
       - name: Revert Package Name
         run: npx json -I -f package.json -e "this.name='baileys'"
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Generate Changelog
         id: generate_changelog
