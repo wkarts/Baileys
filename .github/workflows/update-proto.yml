@@ -20,7 +20,7 @@ jobs:
       - name: Install Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20.x
+          node-version: 20.x  # Usar Node 20.x
 
       - name: Install packages
         run: |
@@ -38,7 +38,7 @@ jobs:
 
       - name: GenerateStatics
         run: |
-          yarn global add protobufjs-cli
+          yarn global add protobufjs protobufjs-cli
           export PATH="$(yarn global bin):$PATH"
           pbjs -t static-module -w commonjs -o ./WAProto/index.js ./WAProto/WAProto.proto
           pbts -o ./WAProto/index.d.ts ./WAProto/index.js
