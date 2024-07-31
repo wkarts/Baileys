@@ -1,4 +1,11 @@
-yarn global add protobufjs-cli;
+# Remover a instalação global anterior
+yarn global remove protobufjs-cli
+
+# Instalar novamente globalmente
+yarn global add protobufjs-cli
+
+# Adicionar a localização dos binários globalmente instalados ao PATH
+export PATH=$(yarn global bin):$PATH
 
 yarn pbjs -t static-module -w commonjs -o ./WAProto/index.js ./WAProto/WAProto.proto;
 yarn pbts -o ./WAProto/index.d.ts ./WAProto/index.js;
