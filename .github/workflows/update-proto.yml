@@ -38,9 +38,8 @@ jobs:
 
       - name: GenerateStatics
         run: |
-          yarn global remove protobufjs-cli
           yarn global add protobufjs-cli
-          export PATH=$(yarn global bin):$PATH
+          export PATH="$(yarn global bin):$PATH"
           pbjs -t static-module -w commonjs -o ./WAProto/index.js ./WAProto/WAProto.proto
           pbts -o ./WAProto/index.d.ts ./WAProto/index.js
 
