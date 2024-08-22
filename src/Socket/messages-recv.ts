@@ -414,7 +414,7 @@ export const makeMessagesRecvSocket = (config: SocketConfig) => {
 			const delPicture = getBinaryNodeChild(node, 'delete')
 
 			ev.emit('contacts.update', [{
-				id: jidNormalizedUser(node?.attrs?.jid) || ((setPicture || delPicture)?.attrs?.hash) || '',
+				id: jidNormalizedUser(node?.attrs?.from) || ((setPicture || delPicture)?.attrs?.hash) || '',
 				imgUrl: setPicture ? 'changed' : 'removed'
 			}])
 
@@ -833,7 +833,7 @@ export const makeMessagesRecvSocket = (config: SocketConfig) => {
 				chatJid: oldestMsgKey.remoteJid,
 				oldestMsgFromMe: oldestMsgKey.fromMe,
 				oldestMsgId: oldestMsgKey.id,
-				oldestMsgTimestampMs: Number(oldestMsgTimestamp),
+				oldestMsgTimestampMs: oldestMsgTimestamp,
 				onDemandMsgCount: count
 			},
 			peerDataOperationRequestType: proto.Message.PeerDataOperationRequestType.HISTORY_SYNC_ON_DEMAND
