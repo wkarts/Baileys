@@ -36,13 +36,12 @@ jobs:
           echo "wa_version=$WA_VERSION" >> $GITHUB_OUTPUT
           echo "wa_js_url=$WA_JS_URL" >> $GITHUB_OUTPUT
 
-      - name: GenerateStatics
-        run: yarn gen:protobuf
-        #run: |
-        #  yarn global add protobufjs protobufjs-cli
-        #  export PATH="$(yarn global bin):$PATH"
-        #  pbjs -t static-module -w commonjs -o ./WAProto/index.js ./WAProto/WAProto.proto
-        #  pbts -o ./WAProto/index.d.ts ./WAProto/index.js
+      - name: GenerateStatics        
+        run: |
+          yarn global add protobufjs protobufjs-cli
+          export PATH="$(yarn global bin):$PATH"
+          pbjs -t static-module -w commonjs -o ./WAProto/index.js ./WAProto/WAProto.proto
+          pbts -o ./WAProto/index.d.ts ./WAProto/index.js
 
       - name: Update baileys-version.json
         run: |
