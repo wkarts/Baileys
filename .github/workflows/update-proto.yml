@@ -1,8 +1,8 @@
 name: Update WAProto
 
 on:
-  schedule:
-    - cron: "20 1 * * *"  # Executa diariamente às 10:19 AM
+  #schedule:
+  #  - cron: "20 1 * * *"  # Executa diariamente às 10:19 AM
   workflow_dispatch:       # Permite execução manual do workflow
 
 permissions:
