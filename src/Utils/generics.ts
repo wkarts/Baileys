@@ -286,7 +286,7 @@ export const fetchLatestBaileysVersion = async(options: AxiosRequestConfig<any> 
 export const fetchLatestWaWebVersion = async(options: AxiosRequestConfig<any>) => {
 	try {
 		const result = await axios.get(
-			'https://web.whatsapp.com/check-update?version=1&platform=web',
+			'https://web.whatsapp.com/check-update?version=2.2413.51&platform=web',
 			{
 				...options,
 				responseType: 'json'
