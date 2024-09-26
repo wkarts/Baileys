@@ -92,7 +92,7 @@ export type ChatModification =
     }
     | { delete: true, lastMessages: LastMessageList }
     // Label
-    | { addLabel: LabelActionBody }
+    | { addLabel: LabelActionBody }    
     // Label assosiation
     | { addChatLabel: ChatLabelAssociationActionBody }
     | { removeChatLabel: ChatLabelAssociationActionBody }
