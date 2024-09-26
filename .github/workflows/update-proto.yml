@@ -2,7 +2,7 @@ name: Update WAProto
 
 on:
   schedule:
-    - cron: "20 1 * * *"  # Executa diariamente às 10:19 AM
+    - cron: "20 10 * * *"  # Executa diariamente às 10:19 AM
   workflow_dispatch:       # Permite execução manual do workflow
 
 permissions:
@@ -36,7 +36,7 @@ jobs:
           echo "wa_version=$WA_VERSION" >> $GITHUB_OUTPUT
           echo "wa_js_url=$WA_JS_URL" >> $GITHUB_OUTPUT
 
-      - name: GenerateStatics
+      - name: GenerateStatics        
         run: |
           yarn global add protobufjs protobufjs-cli
           export PATH="$(yarn global bin):$PATH"
